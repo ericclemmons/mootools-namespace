@@ -71,7 +71,7 @@ var Namespace = new Class({
     
     load: function(namespace) {
         var path = "{basePath}/{namespace}.js".substitute({
-            basePath:   Namespace.basePath,
+            basePath:   Namespace.getBasePath(),
             namespace:  namespace.replace(/\./g, '/')
         });
         
@@ -92,5 +92,19 @@ Namespace.setBasePath = function(path) {
 };
 
 Namespace.getBasePath = function() {
-    return Namespace.basePath;
+    return Namespace.basePath ? Namespace.basePath : ".";
 };
+
+// Initialize base path based on Namespace script & document URL
+;(function() {
+    // Get the last script loaded (should be this script)
+    var script = $$('script').getLast();
+    // Trim off the script name
+    var jsUrl = script.src.substring(0, script.src.lastIndexOf("/"));
+    // Trim off the page name as well
+    var baseUrl = document.URL.substring(0, document.URL.lastIndexOf("/") + 1);
+    // Subtract page path from script path to get script subfolder
+    var path = jsUrl.replace(baseUrl, '');
+    
+    Namespace.setBasePath(path);
+})();
