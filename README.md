@@ -69,7 +69,7 @@ I've opted for `this.super()` instead.
 Also, `Moo.More.Fx.Accordion` is automatically included in the page if it doesn't exist already,
 after which the class will be created.
 
-    new Class("My.Fx.Accordion", {
+    new Namespace("My.Fx.Accordion", {
         
         Extends: "Moo.More.Fx.Accordion",
         
@@ -86,7 +86,7 @@ after which the class will be created.
 If you class depends on the existence of another class, that dependent class will be
 loaded prior prior to class creation.
 
-    new Class("My.Fx.Accordion", {
+    new Namespace("My.Fx.Accordion", {
         // Load class to automatically bind function `say` to `this`
         Requires: "Moo.More.Class.Binds",
         
@@ -145,7 +145,7 @@ templates, as well as events associated with elements on the page.
 
 ### Javascript - /js/My/Login.js
 
-    new Class("My.Login", {
+    new Namespace("My.Login", {
         Requires: [
             "My.Login.Animations",
             "My.Login.Events",
