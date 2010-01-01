@@ -15,15 +15,6 @@ company or project name.
 A good example of Javascript namespacing can be found in my tutorial
 [Making Your Own Growl Widget With Dojo][growl].
 
-## Why Not Depender?
-
-First and foremost, I was looking for namespacing of components so there is a clear
-separation of functionality and ancestry.  There are far too many classes out there
-called `SlideShow`, `Gallery` and `Tooltip`.
-
-Depender doesn't solve this problem and simply does dependency management tightly-coupled
-to the JSON dependency files seen in Mootools, from what I can tell.
-
 ##  Example 1 - Old & New
 
 ### Old `Class` (*still works*)

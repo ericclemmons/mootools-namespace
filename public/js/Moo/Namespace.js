@@ -9,7 +9,7 @@
 var Namespace = new Class({
     
     Implements: Options,
-    
+        
     options: {
         root:       window, // You can set the base for your namespace.  Defaults to `window`
         delimiter:  "."     // Delimiter for namespacing
@@ -31,7 +31,14 @@ var Namespace = new Class({
     parseOptions: function(options) {
         // Replace `Extends: "myClass"` with `Extends: myClass` instantiation
         if ($type(options.Extends) === "string") {
-            options.Extends = this.getClass(options.Extends);
+            var extended = this.getClass(options.Extends) || this.load(options.Extends);
+            
+            if ($type(extended) === "class") {
+                options.Extends = extended;
+            } else {
+                throw new Error("Extended class \"" + options.Extends + "\" does not exist or could not be loaded.");
+                delete options.Extends;
+            };
         }
         
         return options;
@@ -49,17 +56,41 @@ var Namespace = new Class({
                     root[name] = {};
                 }
             } else {
-                // If the last leaf doesn't exist, instantiate the class
-                if (!root[name]) {
+                // If the last leaf doesn't exist & we're looking to instantiate, instantiate the class
+                if (!root[name] && options) {
                     return root[name] = new Class(options);
                 }
-            }
+            };
             
             root = root[name];
         });
         
         // Return the requested namespaced class
         return root;
+    },
+    
+    load: function(namespace) {
+        var path = "{basePath}/{namespace}.js".substitute({
+            basePath:   Namespace.basePath,
+            namespace:  namespace.replace(/\./g, '/')
+        });
+        
+        (new Request({
+            url:    path,
+            method: 'GET',
+            async:  false,
+            evalResponse:   true
+        })).send();
+        
+        return this.getClass(namespace);
     }
     
 });
+
+Namespace.setBasePath = function(path) {
+    Namespace.basePath = path;
+};
+
+Namespace.getBasePath = function() {
+    return Namespace.basePath;
+};
