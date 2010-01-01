@@ -62,19 +62,17 @@ Nothing here is really out-of-the-ordinary besides the function creating the nam
 
 ### New `Class`
 
-The one addition is `this.super()`, which is similar to `Class.Refactor`'s `this.previous()`.
-Unfortunately, many pagination scripts already use `this.previous()` with `this.next()`, so
-I've opted for `this.super()` instead.
-
 Also, `Moo.More.Fx.Accordion` is automatically included in the page if it doesn't exist already,
 after which the class will be created.
+
+`this.parent()` exists because of Mootools' `Extends` option.
 
     new Namespace("My.Fx.Accordion", {
         
         Extends: "Moo.More.Fx.Accordion",
         
         initialize: function() {
-            this.super();
+            this.parent();
             
             // Now, do something slightly different
             // ...
