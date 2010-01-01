@@ -142,6 +142,14 @@ templates, as well as events associated with elements on the page.
         ]
     });
 
+## Demos
+
+See the files:
+
+1.  public/base.html
+2.  public/extends.html
+3.  public/autoload.html
+4.  public/requires.html
 [dojo]: http://docs.dojocampus.org/dojo/index#package-system
 [wf]:   http://www.whitefence.com/
 [growl]:http://blog.uxdriven.com/2009/09/08/making-your-own-growl-widget-with-dojo/
