@@ -1,6 +1,0 @@
-[submodule "public/js/Moo/Core"]
-	path = public/js/Moo/Core
-	url = git://github.com/mootools/mootools-core.git
-[submodule "public/js/Moo/More"]
-	path = public/js/Moo/More
-	url = git://github.com/mootools/mootools-more.git
