@@ -30,16 +30,32 @@ var Namespace = new Class({
     
     parseOptions: function(options) {
         // Replace `Extends: "myClass"` with `Extends: myClass` instantiation
-        if ($type(options.Extends) === "string") {
-            var extended = this.getClass(options.Extends) || this.load(options.Extends);
+        var params = ["Extends", "Requires"];
+        
+        // Iterate through each type of dependency (i.e. "Extends")
+        params.each(function(param) {
+            var resources = $splat(options[param]);
             
-            if ($type(extended) === "class") {
-                options.Extends = extended;
-            } else {
-                throw new Error("Extended class \"" + options.Extends + "\" does not exist or could not be loaded.");
-                delete options.Extends;
-            };
-        }
+            resources.each(function(resource, i) {
+                // If the dependency isn't a class yet, try to load the class
+                if ($type(resource) === "string") {
+                    // Get existing class or load it via SJAX
+                    var resource = this.getClass(resource) || this.load(resource);
+                    
+                    // If class finally exists, assign it to it's key (for Requires)
+                    // or to the param itself (for Extends)
+                    if ($type(resource) === "class") {
+                        if ($type(options[param]) === "array") {
+                            options[param][i] = resource;
+                        } else {
+                            options[param] = resource;
+                        }
+                    } else {
+                        throw new Error(reference + " class \"" + resource + "\" does not exist or could not be loaded.");
+                    }
+                }
+            }, this);
+        }, this);
         
         return options;
     },
