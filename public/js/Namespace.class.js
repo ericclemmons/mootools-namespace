@@ -1,5 +1,5 @@
 /*
-    Script: Namespace.js
+    Script: Namespace.class.js
     
     Author: Eric Clemmons <eric@smarterspam.com>
     
