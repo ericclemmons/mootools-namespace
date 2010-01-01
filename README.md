@@ -117,12 +117,11 @@ templates, as well as events associated with elements on the page.
                     /Templates
                         Register.html
                         Login.html
+                    All.js
                     Animations.js
                     Events.js
                     Form.js
                     Fx.js
-                    
-                Login.js
 
 ### HTML - index.html
 
@@ -130,11 +129,11 @@ templates, as well as events associated with elements on the page.
     <script src="js/Moo/Namespace.js"></script>
     
     <!-- Now, require  -->
-    <script src="js/My/Login.js"></script>
+    <script src="js/My/Login/All.js"></script>
 
-### Javascript - /js/My/Login.js
+### Javascript - /js/My/Login/All.js
 
-    new Namespace("My.Login", {
+    new Namespace("My.Login.All", {
         Requires: [
             "My.Login.Animations",
             "My.Login.Events",
