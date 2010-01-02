@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mootools Namespace - Request</title>
+        <script src="js/Mootools.class.js"></script>
+        <script src="js/Namespace.class.js"></script>
+        <script>
+            Namespace.setBasePath('Moo.Core', 'Moo/Core/Source');
+        </script>
+    </head>
+<body>
+    This text should be replaced.
+    
+    <script>
+        Namespace.require("Moo.Core.Fx.Tween");
+        document.body.tween('background-color', '#fff', '#369');
+    </script>
+</body>
+</html>

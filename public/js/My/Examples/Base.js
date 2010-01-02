@@ -3,7 +3,7 @@ new Namespace("My.Examples.Base", {
     message: "No Message Set",
     
     initialize: function(message) {
-        document.body.set('text', message).setStyle('background', '#369');
+        document.body.set('html', message);
     }
     
 });

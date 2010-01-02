@@ -4,7 +4,6 @@ new Namespace("My.Examples.Extends", {
     
     initialize: function(message) {
         this.parent(message + " (extending My.Examples.Base)");
-        document.body.setStyle('color', 'white');
     }
     
 });

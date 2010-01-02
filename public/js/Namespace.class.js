@@ -30,7 +30,7 @@ var Namespace = new Class({
     
     parseOptions: function(options) {
         // Replace `Extends: "myClass"` with `Extends: myClass` instantiation
-        var params = ["Extends", "Requires"];
+        var params = ["Implements", "Extends", "Requires"];
         
         // Iterate through each type of dependency (i.e. "Extends")
         params.each(function(param) {
@@ -40,7 +40,7 @@ var Namespace = new Class({
                 // If the dependency isn't a class yet, try to load the class
                 if ($type(resource) === "string") {
                     // Get existing class or load it via SJAX
-                    var resource = this.getClass(resource) || this.load(resource);
+                    var resource = this.load(resource);
                     
                     // If class finally exists, assign it to it's key (for Requires)
                     // or to the param itself (for Extends)
@@ -51,7 +51,9 @@ var Namespace = new Class({
                             options[param] = resource;
                         }
                     } else {
-                        throw new Error(reference + " class \"" + resource + "\" does not exist or could not be loaded.");
+                        if (param !== "Requires") {
+                            throw new Error(param + " class \"" + resource + "\" does not exist or could not be loaded.");
+                        }
                     }
                 }
             }, this);
@@ -86,13 +88,8 @@ var Namespace = new Class({
     },
     
     load: function(namespace) {
-        var path = "{basePath}/{namespace}.js".substitute({
-            basePath:   Namespace.getBasePath(),
-            namespace:  namespace.replace(/\./g, '/')
-        });
-        
         (new Request({
-            url:    path,
+            url:    Namespace.getBasePath(namespace) + ".js",
             method: 'GET',
             async:  false,
             evalResponse:   true
@@ -103,12 +100,40 @@ var Namespace = new Class({
     
 });
 
-Namespace.setBasePath = function(path) {
-    Namespace.basePath = path;
+Namespace.paths = {
+    _base: "."
 };
 
-Namespace.getBasePath = function() {
-    return Namespace.basePath ? Namespace.basePath : ".";
+Namespace.setBasePath = function(namespace, path) {
+    if (!path) {
+        var path = namespace;
+        var namespace = "_base";
+    }
+    
+    Namespace.paths[namespace] = path;
+};
+
+Namespace.getBasePath = function(namespace) {
+    // Start with the base path
+    var path = Namespace.paths._base;
+    
+    // Iterate through each specified namespace path ("Moo.Core" => "js/Moo/Core/Source")
+    for (var stub in Namespace.paths) {
+        if (stub === namespace.substring(0, stub.length)) {
+            path += "/" + Namespace.paths[stub];
+            // Remove stub from namespace, as we've already pathed it
+            namespace = namespace.substring(stub.length + 1);
+            break;
+        }
+    }
+    
+    return path + "/" + namespace.replace(/\./g, "/");
+};
+
+Namespace.require = function(namespaces) {
+    $splat(namespaces).each(function(namespace) {
+        new Namespace(namespace, { Requires: namespace });
+    });
 };
 
 // Initialize base path based on Namespace script & document URL

@@ -2,14 +2,14 @@
 <html>
     <head>
         <title>Mootools Namespace - Requires</title>
-        <script src="http://ajax.googleapis.com/ajax/libs/mootools/1.2.4/mootools.js"></script>
+        <script src="js/Mootools.class.js"></script>
         <script src="js/Namespace.class.js"></script>
-        <script src="js/My/Examples/All.js"></script>
     </head>
 <body>
     This text should be replaced.
     
     <script>
+        Namespace.require("My.Examples.All");
         new My.Examples.All();
     </script>
 </body>
