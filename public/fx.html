@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Mootools Namespace - Request</title>
+        <title>Mootools Namespace - FX</title>
         <script src="js/Mootools.class.js"></script>
         <script src="js/Namespace.class.js"></script>
         <script>
@@ -13,7 +13,7 @@
     
     <script>
         Namespace.require("Moo.Core.Fx.Tween");
-        document.body.tween('background-color', '#fff', '#369');
+        $$("body").tween("backgroundColor", "#000", "#fff");
     </script>
 </body>
 </html>
