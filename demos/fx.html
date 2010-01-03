@@ -5,6 +5,7 @@
         <script src="js/Mootools.class.js"></script>
         <script src="../Source/Namespace.class.js"></script>
         <script>
+            Namespace.setBasePath("js");
             Namespace.setBasePath('Moo.Core', 'Moo/Core/Source');
         </script>
     </head>
@@ -13,7 +14,8 @@
     
     <script>
         Namespace.require("Moo.Core.Fx.Tween");
-        $$("body").tween("backgroundColor", "#000", "#fff");
+        $$("body").set('html', 'Howdy There!')
+                  .tween("backgroundColor", "#000", "#fff");
     </script>
 </body>
 </html>
