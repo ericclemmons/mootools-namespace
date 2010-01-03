@@ -15,6 +15,16 @@ company or project name.
 A good example of Javascript namespacing can be found in my tutorial
 [Making Your Own Growl Widget With Dojo][growl].
 
+##  Current Limitations
+
+As Mootools is not yet namespaced (aside from folder structure), I've forked the
+[Mootools Core][core] and [Mootools More][more] repositories to clean up structure
+for autoloading & implement namespacing.  For example, `Fx.Tween` becomes
+`Moo.Core.Fx.Tween`.  `Element.tween` continues to work, as well as `new Fx.Tween`.
+
+Remember, this grew out of the need for namespacing within existing enterprise-level
+code, not for improving upon Mootools' pseudo-namespacing.
+
 ##  Example 1 - Old & New
 
 ### Old `Class` (*still works*)
@@ -154,3 +164,5 @@ See the files:
 [dojo]: http://docs.dojocampus.org/dojo/index#package-system
 [wf]:   http://www.whitefence.com/
 [growl]:http://blog.uxdriven.com/2009/09/08/making-your-own-growl-widget-with-dojo/
+[core]: git@github.com:ericclemmons/mootools-core.git
+[more]: git@github.com:ericclemmons/mootools-more.git
