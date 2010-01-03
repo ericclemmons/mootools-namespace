@@ -2,9 +2,10 @@
 ---
 description: Allows for slightly new Class instantiations for name.spacing
 
+license: MIT-style
+
 authors:
 - Eric Clemmons
-
 
 requires:
 - core/1.2.4:Class.Extras
@@ -12,7 +13,7 @@ requires:
 
 provides: [Namespace]
 
-license: MIT-style
+...
 */
 
 var Namespace = new Class({
