@@ -1,18 +1,16 @@
 /*
 ---
-Script: Namespace.class.js
+author: Eric Clemmons <eric@smarterspam.com>
 
-Author: Eric Clemmons <eric@smarterspam.com>
+description: Allows for slightly new Class instantiations for name.spacing
 
-Description: Allows for slightly new Class instantiations for name.spacing
-
-Requires:
+requires:
 - core/Class.Extras
 - core/Request
 
-Provides: [Namespace]
+provides: [Namespace]
 
-License: MIT-style
+license: MIT-style
 */
 
 var Namespace = new Class({
