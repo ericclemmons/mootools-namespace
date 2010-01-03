@@ -1,5 +1,7 @@
 #   Mootools Namespace
 
+![Screenshot](http://github.com/ericclemmons/mootools-namespace/raw/master/screenshot.png)
+
 Allow `Class` declarations to support [Dojo-like packaging & namespacing][dojo].
 For example, `My.Widget.Growl` would extend `My.Widget.Tips` and require
 `Moo.Core.Request.HTML`:
