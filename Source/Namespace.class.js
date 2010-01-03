@@ -1,8 +1,10 @@
 /*
 ---
-author: Eric Clemmons <eric@smarterspam.com>
-
 description: Allows for slightly new Class instantiations for name.spacing
+
+authors:
+- Eric Clemmons
+
 
 requires:
 - core/1.2.4:Class.Extras
