@@ -4,9 +4,9 @@ author: Eric Clemmons <eric@smarterspam.com>
 
 description: Allows for slightly new Class instantiations for name.spacing
 
-required:
-- core/Class.Extras
-- core/Request
+requires:
+- core/1.2.4:Class.Extras
+- core/1.2.4:Request
 
 provides: [Namespace]
 
