@@ -1,0 +1,6 @@
+[submodule "demos/js/Moo/More"]
+	path = demos/js/Moo/More
+	url = git@github.com:ericclemmons/mootools-more.git
+[submodule "demos/js/Moo/Core"]
+	path = demos/js/Moo/Core
+	url = git@github.com:ericclemmons/mootools-core.git
