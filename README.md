@@ -1,8 +1,16 @@
 #   Mootools Namespace
 
-##  Purpose
+##  Description
 
 Allow `Class` declarations to support [Dojo-like packaging & namespacing][dojo].
+For example, `My.Widget.Growl` would extend `My.Widget.Tips` and require
+`Moo.Core.Request.HTML`:
+    
+    new Namespace("My.Widget.Growl", {
+        Requires: "Moo.Core.Request.HTML",
+        Extends: "My.Widget.Tooltip",
+        ...
+    });
 
 ##  Why?
 
@@ -25,84 +33,53 @@ for autoloading & implement namespacing.  For example, `Fx.Tween` becomes
 Remember, this grew out of the need for namespacing within existing enterprise-level
 code, not for improving upon Mootools' pseudo-namespacing.
 
-##  Example 1 - Old & New
+# How To Use
 
-### Old `Class` (*still works*)
+Suppose you have a custom Growl widget that you would like on your current page...
 
-Nothing here is really out-of-the-ordinary besides the function creating the namespace.
+### Include Namespace.class.js
 
-    // First, create our namespace
-    (function(root) {
+*Remember, `Class.Extras` and `Request` are required for Namespace to work.*
+
+    <script src="js/Namespace.class.js">
+
+The base-path has been set to `js` automatically, as that is where the script is located.
+
+### (Optional) Set the base-path to your modules
+
+    <script>
+        Namespace.setBasePath("My", "js/NotMine");
+    </script>
+
+### Either `require` your widget...
+
+    <script>
+        Namespace.require("My.Widget.Growl");
+        // SJAX request to js/NotMine/Widget/Growl.js
+        // If base-path is default, it would go to:
+        //   js/My/Widget/Growl.js
         
-        "My.Fx.Accordion".split(".").each(function(segment) {
-            if (root[segment]) {
-                // window[segement] or deeper already exists
-            } else {
-                root[segment] = {};
-            }
+        new My.Widget.Growl("Howdy There!");
+    </script>
+
+### ...or make it a dependency for a new class...
+
+    <script>
+        new Namespace("My.Login.Page", {
+            Extends: "My.Widget.Growl",
             
-            root = root[segment];
+            initialize: function(message) {
+                this.parent(message);
+            }
         });
         
-    })(window);
-    
-    // Assign sub-classed Accordion to new namespace
-    var My.Fx.Accordion = new Class({
-        
-        Implements: ["Accordion"],
-        
-        initialize: function() {
-            // Re-implement initialize, unless we're using Class.Refactor
-            // ...
-            
-            // Now, do something slightly different
-            // ....
-        }
-        
-    });
+        new My.Login.Page("Howdy There");
+    </script>
 
-### New `Class`
+Because the `Extends` class is in quotes, it is automatically loaded.  Had it not
+been in quotes, the class/namespace would have to exist before-hand.
 
-Also, `Moo.More.Fx.Accordion` is automatically included in the page if it doesn't exist already,
-after which the class will be created.
-
-`this.parent()` exists because of Mootools' `Extends` option.
-
-    new Namespace("My.Fx.Accordion", {
-        
-        Extends: "Moo.More.Fx.Accordion",
-        
-        initialize: function() {
-            this.parent();
-            
-            // Now, do something slightly different
-            // ...
-        }
-    });
-
-## Example 2 - Requires
-
-If you class depends on the existence of another class, that dependent class will be
-loaded prior prior to class creation.
-
-    new Namespace("My.Fx.Accordion", {
-        // Load class to automatically bind function `say` to `this`
-        Requires: "Moo.More.Class.Binds",
-        
-        // Loading will have finished before `Binds` is analyzed
-        Binds: 'say',
-        
-        initialize: function(message) {
-            this.message = message;
-            setTimeout(this.say, 1000);
-        },
-        
-        say: function() {
-            alert(this.message);
-        }
-    });
-
-## Example 3 - Require entire library
+## Example - Require entire library
 
 Often in large applications, you will need a whole library in the beginning to
 prevent any delayed execution of events (animations, AJAX calls, etc.).
