@@ -33,7 +33,7 @@ for autoloading & implement namespacing.  For example, `Fx.Tween` becomes
 Remember, this grew out of the need for namespacing within existing enterprise-level
 code, not for improving upon Mootools' pseudo-namespacing.
 
-# How to Use
+## How to Use
 
 Suppose you have a custom Growl widget that you would like on your current page...
 
