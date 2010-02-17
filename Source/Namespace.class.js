@@ -50,7 +50,9 @@ var Namespace = new Class({
                 // If the dependency isn't a class yet, try to load the class
                 if ($type(resource) === "string") {
                     // Get existing class or load it via SJAX
-                    var resource = this.load(resource);
+                    var resource = this.getClass(resource)
+                                 ? this.getClass(resource)
+                                 : this.load(resource);
                     
                     // If class finally exists, assign it to it's key (for Requires)
                     // or to the param itself (for Extends)
@@ -98,12 +100,12 @@ var Namespace = new Class({
     },
     
     load: function(namespace) {
-        (new Request({
+        new Request({
             url:    Namespace.getBasePath(namespace) + ".js",
             method: 'GET',
             async:  false,
             evalResponse:   true
-        })).send();
+        }).send();
         
         return this.getClass(namespace);
     }
