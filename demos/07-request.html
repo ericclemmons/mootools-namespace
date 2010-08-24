@@ -34,9 +34,7 @@
         ]);
         
         (new My.Examples.Request({
-            url: "{template}.html".substitute({
-                template: Namespace.getBasePath("My.Examples.Templates.Request")
-            }),
+            url: Namespace.getBasePath("My.Examples.Templates.Request") + ".html",
             onSuccess: function(html) {
                 document.body.set('html', html);
             }
