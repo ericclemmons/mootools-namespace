@@ -33,16 +33,14 @@
             "My.Examples.Request"
         ]);
         
-        var req = new My.Examples.Request({
+        (new My.Examples.Request({
             url: "{template}.html".substitute({
                 template: Namespace.getBasePath("My.Examples.Templates.Request")
             }),
             onSuccess: function(html) {
                 document.body.set('html', html);
             }
-        });
-        
-        req.send();
+        })).send();
     </script>
 </body>
 </html>
