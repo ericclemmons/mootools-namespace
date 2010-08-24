@@ -3,7 +3,7 @@ new Namespace("My.Examples.Extends", {
     Extends: "My.Examples.Base",
     
     initialize: function(message) {
-        this.parent(message + " (extending My.Examples.Base)");
+        this.parent(document.body.get('text') + message + " <i>Called by My.Examples.Extends</i>");
     }
     
 });

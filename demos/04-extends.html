@@ -14,7 +14,12 @@
     This text should be replaced.
     
     <script>
-        new My.Examples.Extends("My.Examples.Extends");
+        window.onload = function() {
+            // Clear out the body for a clean slate
+            document.body.innerHTML = 'My.Examples.Base is the parent class.  ';
+            
+            new My.Examples.Extends("My.Examples.Extends is the child class.");
+        };
     </script>
 </body>
 </html>
