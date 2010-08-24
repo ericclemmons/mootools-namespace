@@ -5,7 +5,7 @@ description: Allows for slightly new Class instantiations for name.spacing
 license: MIT-style
 
 authors:
-- Eric Clemmons
+- Eric Clemmons <eric@uxdriven.com>
 
 requires:
 - core/1.2.4:Class.Extras
