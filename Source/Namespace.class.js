@@ -126,6 +126,9 @@ Namespace.setBasePath = function(namespace, path) {
 };
 
 Namespace.getBasePath = function(namespace) {
+    // Default namespace to empty string
+    var namespace = namespace || '';
+    
     // Start with the base path
     var path = Namespace.paths._base;
     
