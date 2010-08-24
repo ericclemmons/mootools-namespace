@@ -6,23 +6,43 @@
         <script src="../Source/Namespace.class.js"></script>
         <script>
             Namespace.setBasePath("js");
-            Namespace.setBasePath('Moo.Core', 'Moo/Core/Source');
+            Namespace.setBasePath('Moo.Core', function(namespaces) {
+                // Turn "Fx.Tween" into "Fx.Fx.Tween" (for "mootools-core\Fx\Fx.Tween.js")
+                namespaces.unshift(namespaces[0]);
+                
+                // Store last part of namespace "ex. Tween"
+                var submodule = namespaces.pop();
+                
+                var path = Namespace.getBasePath()
+                         + 'Mootools/mootools-core/Source'
+                         + '/'
+                         + namespaces.join('/')
+                         + (namespaces.length > 1 ? '.' : '/')
+                         + submodule;
+                
+                return path;
+            });
         </script>
     </head>
 <body>
     This text should be replaced.
     
     <script>
-        Namespace.require("My.Examples.Request");
+        Namespace.require([
+            "Moo.Core.Request",
+            "My.Examples.Request"
+        ]);
         
-        (new My.Examples.Request({
+        var req = new My.Examples.Request({
             url: "{template}.html".substitute({
                 template: Namespace.getBasePath("My.Examples.Templates.Request")
             }),
             onSuccess: function(html) {
                 document.body.set('html', html);
             }
-        }).send());
+        });
+        
+        req.send();
     </script>
 </body>
 </html>
