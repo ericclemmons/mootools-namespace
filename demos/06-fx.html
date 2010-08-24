@@ -2,19 +2,41 @@
 <html>
     <head>
         <title>Mootools Namespace - FX</title>
-        <script src="js/Mootools.class.js"></script>
+        <script src="../Source/mootools-core-1.2.4.js"></script>
         <script src="../Source/Namespace.class.js"></script>
         <script>
             // All source code is expected to be found in ./js
             Namespace.setBasePath("js");
-            Namespace.setBasePath('Moo.Core', 'Moo/Core/Source');
+            Namespace.setBasePath('Moo.Core', 'Mootools/mootools-core/Source');
+            Namespace.setBasePath('Moo.Core', function(namespaces) {
+                // Turn "Fx.Tween" into "Fx.Fx.Tween" (for "mootools-core\Fx\Fx.Tween.js")
+                namespaces.unshift(namespaces[0]);
+                
+                // Store last part of namespace "ex. Tween"
+                var submodule = namespaces.pop();
+                
+                var path = Namespace.getBasePath()
+                         + 'Mootools/mootools-core/Source'
+                         + '/'
+                         + namespaces.join('/')
+                         + (namespaces.length > 1 ? '.' : '/')
+                         + submodule;
+                
+                return path;
+            });
         </script>
     </head>
 <body>
     This text should be replaced.
     
     <script>
-        Namespace.require("Moo.Core.Fx.Tween");
+        Namespace.require([
+            "Moo.Core.Element.Style",
+            "Moo.Core.Fx",
+            "Moo.Core.Fx.CSS",
+            "Moo.Core.Fx.Tween"
+        ]);
+        
         $$("body").set('html', 'Howdy There!')
                   .tween("backgroundColor", "#000", "#fff");
     </script>
