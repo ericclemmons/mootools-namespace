@@ -20,22 +20,13 @@ var Namespace = new Class({
     
     Implements: Options,
         
-    options: {
-        root:       window, // You can set the base for your namespace.  Defaults to `window`
-        delimiter:  "."     // Delimiter for namespacing
-    },
-    
     // Accepts the namespace path "my.namespace.path" & the class options for instantiation
     initialize: function(namespace, options) {
-        if (options.namespace) {
-            this.setOptions(options.namespace);
-        };
-        
         // Parse options for strings where classes should exist
         options = this.parseOptions(options);
         
         // Return the instantiated class
-        return this.getClass(namespace, options);
+        return Namespace.getClass(namespace, options);
     },
     
     parseOptions: function(options) {
@@ -50,9 +41,9 @@ var Namespace = new Class({
                 // If the dependency isn't a class yet, try to load the class
                 if ($type(resource) === "string") {
                     // Get existing class or load it via SJAX
-                    var resource = this.getClass(resource)
-                                 ? this.getClass(resource)
-                                 : this.load(resource);
+                    var resource = Namespace.getClass(resource)
+                                 ? Namespace.getClass(resource)
+                                 : Namespace.load(resource, Namespace.options.delimiter);
                     
                     // If class finally exists, assign it to it's key (for Requires)
                     // or to the param itself (for Extends)
@@ -72,48 +63,53 @@ var Namespace = new Class({
         }, this);
         
         return options;
-    },
-    
-    // Traverses down the namespace path and returns the (newly instantiated if not existing) class
-    getClass: function(namespace, options) {
-        var root = this.options.root;
-        
-        // Iterate through each section of the namespace
-        namespace.split(this.options.delimiter).each(function(name, i, names) {
-            // Up until the last leaf, create an object if undefined
-            if (i < names.length - 1) {
-                if (!root[name]) {
-                    root[name] = {};
-                }
-            } else {
-                // If the last leaf doesn't exist & we're looking to instantiate, instantiate the class
-                if (!root[name] && options) {
-                    return root[name] = new Class(options);
-                }
-            };
-            
-            root = root[name];
-        });
-        
-        // Return the requested namespaced class
-        return root;
-    },
-    
-    load: function(namespace) {
-        new Request({
-            url:    Namespace.getBasePath(namespace) + ".js",
-            method: 'GET',
-            async:  false,
-            evalResponse:   true
-        }).send();
-        
-        return this.getClass(namespace);
     }
     
 });
 
+Namespace.options = {
+    root:       window, // You can set the base for your namespace.  Defaults to `window`
+    delimiter:  "."     // Delimiter for namespacing
+};
+
 Namespace.paths = {
     _base: "."
+};
+
+// Traverses down the namespace path and returns the (newly instantiated if not existing) class
+Namespace.getClass = function(namespace, options) {
+    var root = Namespace.options.root;
+    
+    // Iterate through each section of the namespace
+    namespace.split(Namespace.options.delimiter).each(function(name, i, names) {
+        // Up until the last leaf, create an object if undefined
+        if (i < names.length - 1) {
+            if (!root[name]) {
+                root[name] = {};
+            }
+        } else {
+            // If the last leaf doesn't exist & we're looking to instantiate, instantiate the class
+            if (!root[name] && options) {
+                return root[name] = new Class(options);
+            }
+        };
+        
+        root = root[name];
+    });
+    
+    // Return the requested namespaced class
+    return root;
+};
+
+Namespace.load = function(namespace) {
+    new Request({
+        url:    Namespace.getBasePath(namespace, Namespace.options.delimiter) + ".js",
+        method: 'GET',
+        async:  false,
+        evalResponse:   true
+    }).send();
+    
+    return Namespace.getClass(namespace);
 };
 
 Namespace.setBasePath = function(namespace, path) {
@@ -129,25 +125,41 @@ Namespace.getBasePath = function(namespace) {
     // Default namespace to empty string
     var namespace = namespace || '';
     
+    // Initially, namespaces are split from "My.Name.Space" to "[My, Name, Space]"
+    var namespaces = namespace.split(Namespace.options.delimiter);
+    
     // Start with the base path
     var path = Namespace.paths._base;
     
     // Iterate through each specified namespace path ("Moo.Core" => "js/Moo/Core/Source")
     for (var stub in Namespace.paths) {
         if (stub === namespace.substring(0, stub.length)) {
-            path += "/" + Namespace.paths[stub];
+            var stubPath = Namespace.paths[stub];
+            
             // Remove stub from namespace, as we've already pathed it
             namespace = namespace.substring(stub.length + 1);
-            break;
+            
+            // Split on specified delimiter or specified one
+            var namespaces = namespace.split(Namespace.options.delimiter);
+            
+            // If namespace has a callback instead of a path, use that
+            if ($type(stubPath) === 'function') {
+                return stubPath(namespaces);
+            } else {
+            // Otherwise, use the specified path
+                path += "/" + Namespace.paths[stub];
+                break;
+            }
         }
     }
     
-    return path + "/" + namespace.replace(/\./g, "/");
+    // Join our base path with the remaining pathed namespace
+    return path + "/" + namespaces.join("/");
 };
 
 Namespace.require = function(namespaces) {
     $splat(namespaces).each(function(namespace) {
-        new Namespace(namespace, { Requires: namespace });
+        Namespace.load(namespace);
     });
 };
 
