@@ -68,7 +68,7 @@ var Namespace = new Class({
 });
 
 Namespace.options = {
-    root:       window, // You can set the base for your namespace.  Defaults to `window`
+    root:       this,   // You can set the base for your namespace.  Defaults to `window` in the browser
     delimiter:  "."     // Delimiter for namespacing
 };
 
