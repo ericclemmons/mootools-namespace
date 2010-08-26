@@ -19,6 +19,8 @@ provides: [Namespace]
 var Namespace = new Class({
     
     Implements: Options,
+    
+    dependencyOptions:  ["Implements", "Extends", "Requires"],
         
     // Accepts the namespace path "my.namespace.path" & the class options for instantiation
     initialize: function(namespace, options) {
@@ -29,12 +31,11 @@ var Namespace = new Class({
         return Namespace.getClass(namespace, options);
     },
     
+    // Replace `Extends: "myClass"` with `Extends: myClass` instantiation
     parseOptions: function(options) {
-        // Replace `Extends: "myClass"` with `Extends: myClass` instantiation
-        var params = ["Implements", "Extends", "Requires"];
         
         // Iterate through each type of dependency (i.e. "Extends")
-        params.each(function(param) {
+        this.dependencyOptions.each(function(param) {
             var resources = $splat(options[param]);
             
             resources.each(function(resource, i) {
