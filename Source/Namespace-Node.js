@@ -21,20 +21,14 @@ Namespace.prototype.parseOptions = function(options) {
     });
 };
 
-Namespace.files = [];
-
 Namespace.load = function(namespace) {
     var filename = Namespace.getBasePath() + namespace.split('.').join('/') + '.js';
     
-    if (Namespace.files.indexOf(filename) == -1) {
-        fs.readFile(filename, function(err, javascript) {
-            if (err) throw err;
-            
-            eval(javascript.toString());
-            
-            Namespace.files.unshift(filename);
-        });
-    }
+    fs.readFile(filename, function(err, javascript) {
+        if (err) throw err;
+        
+        eval(javascript.toString());
+    });
 };
 
 
