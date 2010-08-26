@@ -163,3 +163,7 @@ Namespace.require = function(namespaces) {
         Namespace.load(namespace);
     });
 };
+
+if (typeof module == 'object') {
+    module.exports = Namespace;
+}
